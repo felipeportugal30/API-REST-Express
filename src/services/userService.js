@@ -1,0 +1,106 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET;
+
+const userService = {
+  async createUser(userData) {
+    const salt = await bcrypt.genSalt(10); // Password crypt
+    const hashPassword = await bcrypt.hash(userData.password, salt);
+
+    const createdUser = await prisma.user.create({
+      data: {
+        email: userData.email,
+        name: userData.name,
+        is_adm: userData.is_adm,
+        born_date: userData.born_date,
+        password: hashPassword,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        born_date: true,
+        is_adm: true,
+        //created_at: true,
+      },
+    });
+
+    return createdUser;
+  },
+
+  async findUserByEmailAndPw(userData) {
+    const userDb = await prisma.user.findUnique({
+      where: { email: userData.email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
+    });
+    if (!userDb) {
+      throw {
+        message: "Invalid credentials",
+        status: 401,
+      };
+    }
+
+    const isMatch = await bcrypt.compare(userData.password, userDb.password);
+    if (!isMatch) {
+      throw {
+        message: "Invalid credentials",
+        status: 401,
+      };
+    }
+
+    const token = jwt.sign({ id: userDb.id }, process.env.JWT_SECRET, {
+      expiresIn: "5m",
+    });
+
+    return {
+      userInfo: {
+        id: userDb.id,
+        name: userDb.name,
+        email: userDb.email,
+      },
+      token,
+    };
+  },
+
+  async deleteUser(userData) {
+    const userDb = await prisma.user.findUnique({
+      where: { email: userData.email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
+    });
+    if (!userDb) {
+      throw {
+        message: "Invalid credentials",
+        status: 401,
+      };
+    }
+
+    const isMatch = await bcrypt.compare(userData.password, userDb.password);
+    if (!isMatch) {
+      throw {
+        message: "Invalid credentials",
+        status: 401,
+      };
+    }
+
+    await prisma.user.delete({ where: { email: userDb.email } });
+    return {
+      message: `User ${userDb.name} was deleted with sucess`,
+      data: { id: userDb.id, name: userDb.name, email: userDb.email },
+    };
+  },
+};
+
+export default userService;
