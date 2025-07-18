@@ -31,6 +31,60 @@ const userService = {
     return createdUser;
   },
 
+  async uploadUser(userData, newUserData) {
+    const userDb = await prisma.user.findUnique({
+      where: { email: userData.email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
+    });
+    if (!userDb) {
+      throw {
+        message: "Invalid credentials",
+        status: 401,
+      };
+    }
+
+    const isMatch = await bcrypt.compare(userData.password, userDb.password);
+    if (!isMatch) {
+      throw {
+        message: "Invalid credentials",
+        status: 401,
+      };
+    }
+
+    const dataToUpdate = {};
+    if (newUserData.name) dataToUpdate.name = newUserData.name;
+    if (newUserData.is_adm) dataToUpdate.is_adm = newUserData.is_adm;
+    if (newUserData.born_date) dataToUpdate.born_date = newUserData.born_date;
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      throw {
+        message: "No update fields provided",
+        status: 400,
+      };
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userDb.id },
+      data: dataToUpdate,
+      select: {
+        id: true,
+        name: true,
+        is_adm: true,
+        born_date: true,
+      },
+    });
+
+    return {
+      message: `User ${updatedUser.name} was updated successfully`,
+      data: updatedUser,
+    };
+  },
+
   async findUserByEmailAndPw(userData) {
     const userDb = await prisma.user.findUnique({
       where: { email: userData.email },
