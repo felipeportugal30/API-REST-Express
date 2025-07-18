@@ -126,33 +126,26 @@ const userService = {
 
   async deleteUser(userData) {
     const userDb = await prisma.user.findUnique({
-      where: { email: userData.email },
+      where: { id: userData.id },
       select: {
         id: true,
         name: true,
         email: true,
-        password: true,
       },
     });
+
     if (!userDb) {
       throw {
-        message: "Invalid credentials",
-        status: 401,
+        message: "User not found",
+        status: 404,
       };
     }
 
-    const isMatch = await bcrypt.compare(userData.password, userDb.password);
-    if (!isMatch) {
-      throw {
-        message: "Invalid credentials",
-        status: 401,
-      };
-    }
+    await prisma.user.delete({ where: { id: userDb.id } });
 
-    await prisma.user.delete({ where: { email: userDb.email } });
     return {
-      message: `User ${userDb.name} was deleted with sucess`,
-      data: { id: userDb.id, name: userDb.name, email: userDb.email },
+      message: `User ${userDb.name} was deleted successfully`,
+      data: userDb,
     };
   },
 };

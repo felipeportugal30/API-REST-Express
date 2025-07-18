@@ -48,13 +48,13 @@ const userController = {
 
   deleteUser: async (req, res) => {
     try {
-      const deletedUser = await userService.deleteUser(req.body);
+      const deletedUser = await userService.deleteUser(req.user);
 
-      if (!deletedUser) {
-        const error = new Error("Delete failed");
-        error.status = 500;
-        throw error;
-      }
+      res.status(200).json({
+        success: true,
+        message: deletedUser.message,
+        data: deletedUser.data,
+      });
     } catch (err) {
       res.status(err.status || 500).json({
         success: false,
