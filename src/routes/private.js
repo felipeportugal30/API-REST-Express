@@ -5,6 +5,6 @@ import userController from "../controllers/userController.js";
 const privateRouter = express.Router();
 
 privateRouter.delete("/delete", userController.deleteUser);
-privateRouter.post("/upload", userController.createUser);
+privateRouter.post("/upload", userController.updateUser);
 
 export default privateRouter;

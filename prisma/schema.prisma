@@ -14,10 +14,40 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   name        String
   email       String   @unique
   password    String
-  born_date   DateTime
-  is_adm      Boolean
+
+  datasets    Dataset[]
+  queries     Query[]
+}
+
+model Dataset {
+  id          String    @id @default(uuid())
+  name        String
+  user_id     String
+  created_at  DateTime  @default(now())
+
+  user        User      @relation(fields: [user_id], references: [id])
+  records     Record[]
+}
+
+model Record {
+  id          String    @id @default(uuid())
+  dataset_id  String
+  data_json   String
+  created_at  DateTime  @default(now())
+
+  dataset     Dataset   @relation(fields: [dataset_id], references: [id])
+}
+
+model Query {
+  id          String    @id @default(uuid())
+  user_id     String   
+  request     String
+  response    String
+  created_at  DateTime  @default(now())
+
+  user        User      @relation(fields: [user_id], references: [id])
 }
