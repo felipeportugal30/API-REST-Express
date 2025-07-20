@@ -68,8 +68,8 @@ queries	id, usuario_id, pergunta, resposta, criado_em
 
     Clone o repositório:
 
-git clone https://github.com/seu-usuario/seu-projeto.git
-cd seu-projeto
+git clone https://github.com/felipeportugal30/API-REST-Express.git
+cd api-rest
 
 Configure o .env com as variáveis adequadas (exemplo incluso no repositório)
 
@@ -100,10 +100,9 @@ Explicação visual sobre o funcionamento da API, desde autenticação até inge
 ✅ Fluxograma explicativo
 ✅ Simulação de IA básica via /queries
 ❌ Interface Web
-❌ Testes automatizados
 ❌ Integração com IA externa
 📬 Contato
 
 Desenvolvido por Felipe Portugal
-📧 felipe-portugal@email.com
-🔗 LinkedIn
+📧 fsportugal30@gmail.com
+🔗 https://www.linkedin.com/in/felipe-portugal-08441126b/
