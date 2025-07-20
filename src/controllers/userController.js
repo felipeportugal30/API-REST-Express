@@ -1,36 +1,34 @@
 import userService from "../services/userService.js";
 
-//Create, Delete, Upload, Find
 const userController = {
   createUser: async (req, res) => {
     try {
-      const newUser = await userService.createUser(req.body);
+      const { newUser, token } = await userService.createUser(req.body);
       res.status(201).json({
         success: true,
-        message: `User ${newUser.name} created successfully`,
+        message: `Usuário ${newUser.name} criado com sucesso`,
         data: {
           id: newUser.id,
           name: newUser.name,
           email: newUser.email,
         },
+        token: token,
       });
     } catch (err) {
       res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Failed to create user",
-        error: process.env.NODE_ENV === "development" ? err : undefined,
+        message: err.message || "Falha no servidor",
+        error: process.env.NODE_ENV === "desenvolvimento" ? err : undefined,
       });
     }
   },
 
-  findOneByEmailAndPw: async (req, res) => {
+  loginUser: async (req, res) => {
     try {
-      const { userInfo, token } = await userService.findUserByEmailAndPw(
-        req.body
-      );
+      const { userInfo, token } = await userService.loginUser(req.body);
       res.status(200).json({
         success: true,
-        message: `User ${userInfo.email} find successfully`,
+        message: `Usuário ${userInfo.email} encontrado com sucesso`,
         data: {
           id: userInfo.id,
           name: userInfo.name,
@@ -41,8 +39,25 @@ const userController = {
     } catch (err) {
       res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Failed to find user",
-        error: process.env.NODE_ENV === "development" ? err : undefined,
+        message: err.message || "Falha no servidor",
+        error: process.env.NODE_ENV === "desenvolvimento" ? err : undefined,
+      });
+    }
+  },
+
+  findUser: async (req, res) => {
+    try {
+      const userInfo = await userService.findUser({ id: req.user.id });
+      res.status(200).json({
+        success: true,
+        message: `Usuário ${userInfo.name} encontado com sucesso`,
+        data: userInfo,
+      });
+    } catch (err) {
+      res.status(err.status || 500).json({
+        success: false,
+        message: err.message || "Falha no servidor",
+        error: process.env.NODE_ENV === "desenvolvimento" ? err : undefined,
       });
     }
   },
@@ -53,14 +68,14 @@ const userController = {
 
       res.status(200).json({
         success: true,
-        message: `User ${deletedUser.name} deleted successfully`,
+        message: `Usuário ${deletedUser.name} deletado com sucesso`,
         data: deletedUser.data,
       });
     } catch (err) {
       res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Failed to delete user",
-        error: process.env.NODE_ENV === "development" ? err : undefined,
+        message: err.message || "Falha no servidor",
+        error: process.env.NODE_ENV === "desenvolvimento" ? err : undefined,
       });
     }
   },
@@ -73,7 +88,7 @@ const userController = {
       if (!name && !password) {
         return res.status(400).json({
           success: false,
-          message: "You must provide a name or password to update.",
+          message: "Credenciais invalidas",
         });
       }
 
@@ -91,7 +106,7 @@ const userController = {
 
       res.status(200).json({
         success: true,
-        message: `User ${updatedUser.name} updated successfully`,
+        message: `Usuário ${updatedUser.name} atualizado com sucesso`,
         data: {
           id: updatedUser.id,
           name: updatedUser.name,
@@ -101,8 +116,8 @@ const userController = {
     } catch (err) {
       res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Failed to update user",
-        error: process.env.NODE_ENV === "development" ? err : undefined,
+        message: err.message || "Falha no servidor",
+        error: process.env.NODE_ENV === "desenvolvimento" ? err : undefined,
       });
     }
   },
