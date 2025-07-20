@@ -68,8 +68,8 @@ queries	id, usuario_id, pergunta, resposta, criado_em
 
     Clone o repositório:
 
-git clone https://github.com/felipeportugal30/API-REST-Express.git
-cd api-rest
+    git clone https://github.com/felipeportugal30/API-REST-Express.git
+    cd api-rest
 
 Configure o .env com as variáveis adequadas (exemplo incluso no repositório)
 
