@@ -11,3 +11,18 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + uniqueSuffix + ext);
   },
 });
+
+const fileFilter = (req, file, cb) => {
+  const allowed = [".csv", ".pdf"];
+  const ext = path.extname(file.originalname).toLowerCase();
+
+  if (allowed.includes(ext)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Apenas arquivos .csv e .pdf são permitidos"), false);
+  }
+};
+
+const upload = multer({ storage, fileFilter });
+
+export default upload;

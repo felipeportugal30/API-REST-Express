@@ -15,6 +15,17 @@ const userService = {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(userData.password, salt);
 
+    const existingUser = await prisma.user.findUnique({
+      where: { email: userData.email },
+    });
+
+    if (existingUser) {
+      throw {
+        status: 400,
+        message: "Email já cadastrado",
+      };
+    }
+
     const createdUser = await prisma.user.create({
       data: {
         email: userData.email,
@@ -35,11 +46,11 @@ const userService = {
     const token = jwt.sign(
       { id: createdUser.id, email: createdUser.email },
       JWT_SECRET,
-      { expiresIn: "5m" }
+      { expiresIn: "1d" }
     );
 
     return {
-      userInfo: {
+      newUser: {
         id: createdUser.id,
         name: createdUser.name,
         email: createdUser.email,
@@ -49,14 +60,14 @@ const userService = {
   },
 
   updateUser: async (userId, dataToUpdate) => {
-    if (!userData.id) {
+    if (!userId) {
       throw errors.INVALID_REQUEST;
     }
     if (Object.keys(dataToUpdate).length === 0) {
       throw errors.INVALID_REQUEST;
     }
 
-    updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: dataToUpdate,
     });
@@ -91,7 +102,7 @@ const userService = {
     }
 
     const token = jwt.sign({ id: userDb.id, email: userDb.email }, JWT_SECRET, {
-      expiresIn: "5m",
+      expiresIn: "1d",
     });
 
     return {

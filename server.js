@@ -10,8 +10,8 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.use("/crud/public", publicRoutes);
-app.use("/crud/private", authMiddleware, privateRoutes);
+app.use("/api", publicRoutes);
+app.use("/api", authMiddleware, privateRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(PORT, () => {

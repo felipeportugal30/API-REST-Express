@@ -11,7 +11,7 @@ const authmiddleware = (req, res, next) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res
       .status(401)
-      .json({ success: false, message: "Token not provided" });
+      .json({ success: false, message: "Credenciais inválidas" });
   }
 
   const token = authHeader.split(" ")[1];
@@ -23,7 +23,7 @@ const authmiddleware = (req, res, next) => {
   } catch (err) {
     return res
       .status(401)
-      .json({ success: false, message: "Invalid or expired token" });
+      .json({ success: false, message: "Credenciais inválidas" });
   }
 };
 

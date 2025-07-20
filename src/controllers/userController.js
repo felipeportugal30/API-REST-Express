@@ -1,3 +1,4 @@
+import nodemon from "nodemon";
 import userService from "../services/userService.js";
 
 const userController = {
