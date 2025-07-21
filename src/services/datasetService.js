@@ -34,6 +34,13 @@ const datasetService = {
       throw { status: 400, message: "Arquivo não fornecido" };
     }
 
+    if (
+      !file.originalname.endsWith(".csv") &&
+      !file.originalname.endsWith(".pdf")
+    ) {
+      throw { status: 400, message: "Arquivo não aceito" };
+    }
+
     const dataset = await prisma.dataset.create({
       data: {
         name: file.originalname,

@@ -103,7 +103,7 @@ privateRouter.get("/me", userController.findUser);
  *       201:
  *         description: Arquivo criado com sucesso
  *       400:
- *         description: Arquivo não fornecido
+ *         description: Arquivo não fornecido ou aceito
  *       500:
  *         description: Falha de servidor
  */
@@ -226,6 +226,9 @@ privateRouter.get("/list-queries", queryController.listQueries);
  *                 type: string
  *                 description: Pergunta a ser feita
  *                 example: "Qual a capital do brasil?"
+ *               datasetId:
+ *                 type: string
+ *                 description: Id do dataset
  *     responses:
  *       200:
  *         description: Resposta gerada com sucesso

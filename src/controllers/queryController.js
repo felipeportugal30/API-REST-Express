@@ -5,6 +5,7 @@ const queryController = {
     try {
       const userId = req.user.id;
       const question = req.body.question;
+      const datasetId = req.body.datasetId;
 
       if (!question) {
         return res
@@ -12,11 +13,11 @@ const queryController = {
           .json({ success: false, message: "Pergunta ausente" });
       }
 
-      const query = await queryService.createQuery(userId, question);
+      const query = await queryService.createQuery(userId, datasetId, question);
 
       res.status(200).json({
         success: true,
-        message: "Query criada com sucesso",
+        message: "Query criada com sucesso e dataset encontrado",
         data: query,
       });
     } catch (err) {

@@ -9,9 +9,23 @@ dotenv.config();
 const HF_TOKEN = process.env.HF_API_TOKEN;
 
 const queryService = {
-  async createQuery(userId, question) {
+  async createQuery(userId, datasetId, question) {
     if (!userId) {
       throw errors.INVALID_REQUEST;
+    }
+
+    if (!datasetId) {
+      throw errors.INVALID_REQUEST;
+    }
+
+    const dataset = await prisma.dataset.findFirst({
+      where: {
+        id: datasetId,
+      },
+    });
+
+    if (!dataset) {
+      throw errors.USER_NOT_FOUND;
     }
 
     const client = new InferenceClient(HF_TOKEN);
@@ -37,6 +51,9 @@ const queryService = {
         response: answer,
         user: {
           connect: { id: userId },
+        },
+        dataset: {
+          connect: { id: datasetId },
         },
       },
     });
