@@ -138,11 +138,17 @@ Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 ## 🚀 Diferenciais Implementados
 
 ✅ Documentação Swagger
+
 ✅ Endpoint /me
+
 ✅ Upload de arquivos .csv e .pdf
+
 ✅ Fluxograma explicativo
+
 ✅ Simulação de IA com mock via /queries
+
 ❌ Interface Web
+
 ❌ Integração com IA externa (ex: Hugging Face)
 
 ## 📬 Contato
