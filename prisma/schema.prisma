@@ -29,7 +29,6 @@ model Dataset {
 
   user        User      @relation(fields: [user_id], references: [id])
   records     Record[]
-  queries     Query[]
 }
 
 model Record {
@@ -47,8 +46,6 @@ model Query {
   request     String
   response    String
   created_at  DateTime  @default(now())
-  dataset_id  String
 
   user        User      @relation(fields: [user_id], references: [id])
-  dataset     Dataset   @relation(fields: [dataset_id], references: [id])
 }

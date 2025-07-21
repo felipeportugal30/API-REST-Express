@@ -1,5 +1,5 @@
-import nodemon from "nodemon";
 import userService from "../services/userService.js";
+import bcrypt from "bcrypt";
 
 const userController = {
   createUser: async (req, res) => {
@@ -48,7 +48,8 @@ const userController = {
 
   findUser: async (req, res) => {
     try {
-      const userInfo = await userService.findUser({ id: req.user.id });
+      const userId = req.user.id;
+      const userInfo = await userService.findUser(userId);
       res.status(200).json({
         success: true,
         message: `Usuário ${userInfo.name} encontado com sucesso`,
@@ -69,7 +70,7 @@ const userController = {
 
       res.status(200).json({
         success: true,
-        message: `Usuário ${deletedUser.name} deletado com sucesso`,
+        message: `Usuário deletado com sucesso`,
         data: deletedUser.data,
       });
     } catch (err) {

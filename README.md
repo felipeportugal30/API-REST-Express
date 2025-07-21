@@ -147,9 +147,9 @@ Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 
 ✅ Simulação de IA com mock via /queries
 
-❌ Interface Web
+✅ Interface Web (Swagger UI)
 
-❌ Integração com IA externa (ex: Hugging Face)
+✅ Integração com IA externa
 
 ## 📬 Contato
 

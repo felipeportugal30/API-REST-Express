@@ -115,12 +115,12 @@ const userService = {
     };
   },
 
-  async findUser(userData) {
-    if (!id) {
+  async findUser(userId) {
+    if (!userId) {
       throw errors.INVALID_REQUEST;
     }
     const userDb = await prisma.user.findUnique({
-      where: { id: userData.id },
+      where: { id: userId },
       select: {
         id: true,
         name: true,

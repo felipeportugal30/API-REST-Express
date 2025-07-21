@@ -1,7 +1,6 @@
 import fs from "fs";
 import csv from "csv-parser";
-import axios from "axios";
-import dotenv from "dotenv";
+import pdf from "pdf-parse";
 import { PrismaClient } from "@prisma/client";
 import errors from "../exception/error.js";
 
@@ -17,10 +16,17 @@ const parseCSV = async (filePath) => {
       .on("error", reject);
   });
 };
+const readPDF = async (filePath) => {
+  const dataBuffer = fs.readFileSync(filePath);
+  const data = await pdf(dataBuffer);
 
-dotenv.config();
-const HF_API_URL = "https://transformer.huggingface.co/doc/gpt2-large";
-const HF_TOKEN = process.env.HF_API_TOKEN;
+  const pages = data.text.split("\f").filter((page) => page.trim().length > 0);
+
+  return pages.map((pageText, index) => ({
+    page: index + 1,
+    text: pageText.trim(),
+  }));
+};
 
 const datasetService = {
   async uploadFile(file, userId) {
@@ -38,11 +44,20 @@ const datasetService = {
       },
     });
 
-    if (file.mimetype === "text/csv") {
+    if (file.originalname.endsWith(".csv")) {
       const rows = await parseCSV(file.path);
       await prisma.record.createMany({
         data: rows.map((row) => ({
           data_json: row,
+          dataset_id: dataset.id,
+        })),
+      });
+    }
+    if (file.originalname.endsWith(".pdf")) {
+      const pages = await readPDF(file.path);
+      await prisma.record.createMany({
+        data: pages.map((page) => ({
+          data_json: page,
           dataset_id: dataset.id,
         })),
       });
@@ -81,19 +96,15 @@ const datasetService = {
     }));
   },
 
-  async listRecords(userId, datasetId) {
+  async listRecords(userId) {
     const dataset = await prisma.dataset.findUnique({
-      where: { id: datasetId },
+      where: { id: userId },
       include: {
         records: {
           select: { id: true, data_json: true },
         },
       },
     });
-
-    if (!dataset || dataset.user_id !== userId) {
-      throw { status: 403, message: "Acesso negado" };
-    }
 
     return dataset.records.map((r) => ({
       id: r.id,
@@ -123,39 +134,6 @@ const datasetService = {
     );
 
     return filtered;
-  },
-
-  async createQuery(userId, question, datasetId) {
-    if (!userId) {
-      throw errors.INVALID_REQUEST;
-    }
-    const response = await axios.post(
-      HF_API_URL,
-      { inputs: question },
-      {
-        headers: {
-          Authorization: `Bearer ${HF_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const answer =
-      response.data[0]?.generated_text || "Resposta não encontrada.";
-    if (!answer) {
-      throw errors.SERVER_ERROR;
-    }
-
-    const query = await prisma.query.create({
-      data: {
-        user_id: userId,
-        dataset_id: datasetId,
-        request: question,
-        response: answer,
-      },
-    });
-
-    return query;
   },
 };
 

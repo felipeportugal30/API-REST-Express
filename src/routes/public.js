@@ -5,7 +5,7 @@ const publicRouter = express.Router();
 
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Registra um novo usuário
  *     tags: [Auth]
@@ -22,11 +22,14 @@ const publicRouter = express.Router();
  *             properties:
  *               name:
  *                 type: string
+ *                 example: João Silva
  *               email:
  *                 type: string
  *                 format: email
+ *                 example: joaosilva@email.com
  *               password:
  *                 type: string
+ *                 example: senha123
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -39,7 +42,7 @@ publicRouter.post("/auth/register", userController.createUser);
 
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Autentica o usuário e retorna um token
  *     tags: [Auth]
@@ -56,8 +59,10 @@ publicRouter.post("/auth/register", userController.createUser);
  *               email:
  *                 type: string
  *                 format: email
+ *                 example: joaosilva@email.com
  *               password:
  *                 type: string
+ *                 example: senha123
  *     responses:
  *       200:
  *         description: Login realizado com sucesso

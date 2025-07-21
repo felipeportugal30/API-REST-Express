@@ -77,31 +77,6 @@ const datasetController = {
       });
     }
   },
-
-  createQuery: async (req, res) => {
-    try {
-      const userId = req.user.id;
-      const { question, datasetId } = req.body;
-
-      if (!question || !datasetId) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Pergunta ou datasetId ausente" });
-      }
-
-      const query = await datasetService.createQuery(
-        userId,
-        question,
-        datasetId
-      );
-      res.json({ success: true, data: query });
-    } catch (err) {
-      res.status(err.status || 500).json({
-        success: false,
-        message: err.message || "Erro de servidor",
-      });
-    }
-  },
 };
 
 export default datasetController;
