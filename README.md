@@ -29,6 +29,7 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 - `GET /api/datasets`: Lista datasets do usuário autenticado
 - `GET /api/datasets/:id/records`: Lista registros de um dataset específico
 - `GET /api/records/search?query=palavra`: Busca textual nos registros (JSON)
+- 
 
 ### 🤖 Simulação de IA
 
@@ -36,6 +37,14 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 - `GET /api/queries`: Lista perguntas e respostas anteriores
 
 ---
+
+
+## 🧪 Documentação (Swagger)
+
+Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
+
+---
+
 
 ## 🧱 Modelagem de Dados
 
@@ -50,6 +59,7 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 
 ---
 
+
 ## 🛠️ Tecnologias Utilizadas
 
 - Node.js + Express
@@ -60,6 +70,7 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 - Docker + Docker Compose (orquestração)
 
 ---
+
 
 ## 🐳 Como Rodar com Docker
 
@@ -80,6 +91,9 @@ Acesse:
 - Swagger: http://localhost:3000/api/docs
 
 - PgAdmin: http://localhost:5050
+
+---
+
 
 ## 🧑‍💻 Como Rodar Localmente (sem Docker)
 
@@ -127,13 +141,15 @@ Inicie o servidor:
 
     npm run dev
 
-## 🧪 Documentação (Swagger)
+---
 
-Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 
 ## 🔁 Fluxo da Aplicação
 
 ![Fluxograma da API](./imgs/fluxograma.png)
+
+---
+
 
 ## 🚀 Diferenciais Implementados
 
@@ -150,6 +166,9 @@ Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 ✅ Interface Web (Swagger UI)
 
 ✅ Integração com IA externa
+
+---
+
 
 ## 📬 Contato
 
