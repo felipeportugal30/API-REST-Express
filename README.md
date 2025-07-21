@@ -97,7 +97,7 @@ Acesse:
 
 ## 🧑‍💻 Como Rodar Localmente (sem Docker)
 
-## ✅ Pré-requisitos
+### ✅ Pré-requisitos
 
 - Node.js (v18+)
 
@@ -105,7 +105,7 @@ Acesse:
 
 - npm
 
-## 🔧 Passos
+### 🔧 Passos
 
 Clone o projeto:
 
