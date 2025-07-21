@@ -16,7 +16,7 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 ### 📥 Upload e Ingestão de Arquivos
 
 - `POST /api/datasets/upload`: Upload de arquivos `.csv` ou `.pdf`
-- Armazenamento local
+- Armazenamento local (em ./uploads na raiz do projeto)
 - Registro automático de metadados:
   - Nome do arquivo
   - Tamanho
