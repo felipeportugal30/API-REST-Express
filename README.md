@@ -90,7 +90,7 @@ Acesse:
 
 - Swagger: http://localhost:3000/api/docs
 
-- PgAdmin: http://localhost:5050
+- PgAdmin: http://localhost:5050 (usuario: admin@nuven.com | senha: admin)
 
 ---
 
