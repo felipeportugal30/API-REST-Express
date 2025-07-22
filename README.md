@@ -121,6 +121,17 @@ Acesse:
 
 - PgAdmin: http://localhost:5050 (usuario-pgadmin: admin@nuven.com | senha-pgadmin: admin) (usuario-pg: postgres | senha-pg: postgres)
 
+PgAdmin (localhost:5050)
+
+- Registre um server
+
+  - Name: nuven
+  - Host: db
+  - Port: 5432
+  - Maintenance: postgres
+  - Username: postgres
+  - Password: postgres
+
 ---
 
 ## 🧑‍💻 Como Rodar Localmente (sem Docker)

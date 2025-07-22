@@ -103,17 +103,20 @@ const datasetService = {
     }));
   },
 
-  async listRecords(userId) {
-    const dataset = await prisma.dataset.findUnique({
-      where: { id: userId },
-      include: {
-        records: {
-          select: { id: true, data_json: true },
-        },
-      },
+  async listRecords(userId, datasetId) {
+    if (!userId) {
+      throw errors.INVALID_CREDENTIALS;
+    }
+    if (!datasetId) {
+      throw errors.INVALID_REQUEST;
+    }
+
+    const records = await prisma.record.findMany({
+      where: { dataset_id: datasetId },
+      select: { id: true, data_json: true },
     });
 
-    return dataset.records.map((r) => ({
+    return records.map((r) => ({
       id: r.id,
       data_json: r.data_json,
     }));
