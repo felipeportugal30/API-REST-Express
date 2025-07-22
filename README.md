@@ -29,7 +29,6 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 - `GET /api/datasets`: Lista datasets do usuário autenticado
 - `GET /api/datasets/:id/records`: Lista registros de um dataset específico
 - `GET /api/records/search?query=palavra`: Busca textual nos registros (JSON)
-- 
 
 ### 🤖 Simulação de IA
 
@@ -38,13 +37,11 @@ Este projeto é uma **API RESTful** desenvolvida em **Node.js com Express**, que
 
 ---
 
-
 ## 🧪 Documentação (Swagger)
 
 Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 
 ---
-
 
 ## 🧱 Modelagem de Dados
 
@@ -59,7 +56,6 @@ Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 
 ---
 
-
 ## 🛠️ Tecnologias Utilizadas
 
 - Node.js + Express
@@ -71,13 +67,46 @@ Acesse http://localhost:3000/api/docs para testar os endpoints de forma visual.
 
 ---
 
-
 ## 🐳 Como Rodar com Docker
 
     git clone https://github.com/felipeportugal30/API-REST-Express.git
+
     cd API-REST-Express
 
-Crie um arquivo .env com as variáveis necessárias (modelo incluído).
+Crie um arquivo .env com as variáveis necessárias.
+
+    JWT_SECRET = "Token JWT SECRET"
+
+    HF_API_TOKEN = "Token Hugging Face Inference API"
+
+Instale as dependências de desenvolvimento antes do build
+
+    npm install
+
+    npx prisma generate
+
+❗ Para que seu container execute com sucesso, por favor, edite o arquivo "API-REST-EXPRESS/node_modules/pdf-parse/index.js", para:
+
+    const Fs = require('fs');
+    const Pdf = require('./lib/pdf-parse.js');
+    module.exports = Pdf;
+    let isDebugMode = !module.parent;
+    //process.env.AUTO_KENT_DEBUG
+    //for testing purpose
+    /*
+    if (isDebugMode) {
+        let PDF_FILE = './test/data/05-versions-space.pdf';
+        let dataBuffer = Fs.readFileSync(PDF_FILE);
+        Pdf(dataBuffer).then(function(data) {
+            Fs.writeFileSync(`${PDF_FILE}.txt`, data.text, {
+                encoding: 'utf8',
+                flag: 'w'
+            });
+            debugger;
+        }).catch(function(err) {
+            debugger;
+        });
+    }*/
 
 Construa e suba os containers:
 
@@ -90,10 +119,9 @@ Acesse:
 
 - Swagger: http://localhost:3000/api/docs
 
-- PgAdmin: http://localhost:5050 (usuario-pgadmin: admin@nuven.com | senha-pgadmin: admin) (usuario-pg: postgres | senha-pg: postgres) 
+- PgAdmin: http://localhost:5050 (usuario-pgadmin: admin@nuven.com | senha-pgadmin: admin) (usuario-pg: postgres | senha-pg: postgres)
 
 ---
-
 
 ## 🧑‍💻 Como Rodar Localmente (sem Docker)
 
@@ -143,13 +171,11 @@ Inicie o servidor:
 
 ---
 
-
 ## 🔁 Fluxo da Aplicação
 
 ![Fluxograma da API](./imgs/fluxograma.png)
 
 ---
-
 
 ## 🚀 Diferenciais Implementados
 
@@ -168,7 +194,6 @@ Inicie o servidor:
 ✅ Integração com IA externa
 
 ---
-
 
 ## 📬 Contato
 
